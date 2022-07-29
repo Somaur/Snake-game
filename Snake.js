@@ -1,10 +1,10 @@
 function Snake(size = 10, canvasOptions) {
     this.position = { x: 0, y: 0 };
-    this.size = size;
     this.speed = { x: size * 1, y: 0 };
     this.direction = 'Right';
     this.targetNum = 0;
     this.tails = [];
+    this.size = size;
     this.canvasOptions = canvasOptions;
 }
 

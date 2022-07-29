@@ -43,6 +43,16 @@ button {
     color: #fff;
 }
 
+.operatingInstruction {
+    margin-top: 15px;
+    background: #55c4d0;
+    width: 400px;
+    box-shadow: 0 1px 10px #55c4d0;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+}s
+
 button:active {
     transform: scale(0.8);
 }
@@ -53,4 +63,14 @@ button:active {
     align-items: center;
     justify-content: center; 
     margin-bottom: 10px;
+}
+
+.operatingImage {
+    height: 50px;
+    margin: 5px;
+}
+
+.operatingText {
+    margin-left: 10px;
+    font-size: medium;
 }
