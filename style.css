@@ -51,7 +51,7 @@ button {
     justify-content: flex-start;
     align-items: center;
     display: flex;
-}s
+}
 
 button:active {
     transform: scale(0.8);

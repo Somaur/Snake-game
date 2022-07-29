@@ -45,12 +45,6 @@ function startCycle() {
             endCycle();
             snake.init();
         }
-        // console.log("snake position: ")
-        // console.log(snake.position);
-        // console.log("snake speed: ")
-        // console.log(snake.speed);
-        // console.log("snake direction: ")
-        // console.log(snake.direction);
         
     }, cycleTime);
 }
@@ -93,11 +87,4 @@ window.addEventListener('keydown', (event) => {
     const direction = event.key.replace('Arrow', '');
     console.log('direction: ' + direction);
     snake.changeDirection(direction);
-    // console.log('press key: [' + event.key + ']');
-    // if (event.key === 'Q' || event.key === 'q') {
-    //     snake.position.x = 0;
-    //     snake.position.y = 0;
-    //     snake.speed.x = 0;
-    //     snake.speed.y = 0;
-    // }
 })
