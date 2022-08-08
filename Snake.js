@@ -3,23 +3,25 @@ function Snake(size = 10, canvasOptions) {
     this.speed = { x: size * 1, y: 0 };
     this.direction = 'Right';
     this.targetNum = 0;
+    this.len = 0;
     this.tails = [];
     this.size = size;
     this.canvasOptions = canvasOptions;
 }
 
-Snake.prototype.init = function() {
+Snake.prototype.init = function(len = 0, tails = []) {
     this.position = { x: 0, y: 0 };
     this.speed = { x: size * 1, y: 0 };
     this.direction = 'Right';
     this.targetNum = 0;
-    this.tails = [];
+    this.len = len;
+    this.tails = tails;
 }
 
 Snake.prototype.draw = function() {
     const { ctx } = this.canvasOptions;
     ctx.fillStyle = '#fff';
-    for (let i = 0; i < this.tails.length; i++) {
+    for (let i = 0; i < this.len; i++) {
         const { x, y } = this.tails[i];
         ctx.fillRect(x, y, this.size, this.size);
     }
@@ -31,9 +33,16 @@ Snake.prototype.update = function() {
         this.tails[i] = this.tails[i + 1];
     }
 
-    if (this.targetNum > 0) {
-        this.tails[this.targetNum - 1] = { x: this.position.x, y: this.position.y };
+    if (this.len > 0) {
+        this.tails[this.len - 1] = { x: this.position.x, y: this.position.y };
     }
+
+    log = ''
+    for (let i = 0; i < this.len; i++) {
+        if (!this.tails[i]) log += ' [' + this.tails[i] + ']'
+        else log += ' [' + this.tails[i].x + ',' + this.tails[i].y + ']' 
+    }
+    console.log('snake.tails:', log);
 
     this.position.x += this.speed.x;
     this.position.y += this.speed.y;
@@ -84,12 +93,14 @@ Snake.prototype.changeDirection = function(direction) {
     this.directionCooler = true;
     setTimeout(() => {
         this.directionCooler = false;
-    }, cycleTime - 30)
+    }, spacings[spacingIdx] - 30)
 }
 
 Snake.prototype.eatTarget = function(target) {
     if (this.position.x === target.x && this.position.y === target.y) {
+        target.genRandomLocation(snake);
         this.targetNum++;
+        this.len++;
         return true;
     }
     return false;

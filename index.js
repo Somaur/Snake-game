@@ -1,12 +1,13 @@
-const canvas = document.querySelector('.canvas');
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const size = 20;
 const rows = canvas.height / size;
 const columns = canvas.width / size;
 
-const cycleTime = 200; // 200 milliseconds
-
+const spacings = [250, 200, 180, 150, 130, 120, 110, 100, 1];
+const spaceTarget = [0, 5, 10, 20, 30, 40, 55, 80, 99999];
+let spacingIdx = 0; // 200 milliseconds
 
 const startButton = document.getElementById('start');
 const pauseButton = document.getElementById('pause');
@@ -16,37 +17,46 @@ let target = new Target(size, { canvas, ctx, rows, columns });
 let mainCycle = null;
 
 function init() {
-    target.genRandomLocation();
+    target.genRandomLocation(snake);
     target.draw();
     snake.draw();
 }
 
 init();
 
+function runGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    target.draw();
+    snake.update();
+    snake.draw();
+
+    console.log("tails length: " + snake.len)
+
+    if (snake.eatTarget(target)) {
+        if (snake.targetNum >= spaceTarget[spacingIdx + 1]) {
+            ++spacingIdx;
+            clearInterval(mainCycle);
+            mainCycle = setInterval(runGame, spacings[spacingIdx]);
+            document.getElementById('score').innerText = snake.targetNum;
+        }
+    }
+
+    document.getElementById('score').innerText = snake.targetNum;
+
+    if (snake.checkCollision()) {
+        gameover();
+        endCycle();
+        snake.init();
+        spacingIdx = 0;
+    }
+}
+
 function startCycle() {
     if (mainCycle != null) return;
     document.getElementById('canvas').className = 'canvas';
     pauseButton.style.display = 'block';
     startButton.style.display = 'none';
-    mainCycle = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        target.draw();
-        snake.update();
-        snake.draw();
-
-        if (snake.eatTarget(target)) {
-            target.genRandomLocation();
-        }
-
-        document.getElementById('score').innerText = snake.targetNum;
-
-        if (snake.checkCollision()) {
-            gameover();
-            endCycle();
-            snake.init();
-        }
-        
-    }, cycleTime);
+    mainCycle = setInterval(runGame, spacings[spacingIdx]);
 }
 
 function endCycle() {
